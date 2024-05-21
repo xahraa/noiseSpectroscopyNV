@@ -13,7 +13,7 @@ import os
 # os.environ["CUDA_VISIBLE_DEVICES"]="0";
 import sys
 import socket
-import configN1
+import configurations
 import funPytorch as fun
 import notifier
 from datetime import datetime
