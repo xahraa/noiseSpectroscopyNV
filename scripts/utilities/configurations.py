@@ -23,6 +23,9 @@ from hyperopt import hp
 from hyperopt.pyll.base import scope
 from collections import defaultdict
 
+
+
+
 multiCollapseMinMax1 = (  #from data creation
         (0.002, 0.008),
         (0.3, 0.7),
@@ -48,7 +51,47 @@ multiCollapseRanges2 = (
         (0, 19),
         (19, 50),
     )
+#====================================================#
+# Edited configurations
+from conf import Conf
 
+configN1 = Conf({
+    "path":                 'configN1',
+    "dataset":              'dataset32.npz',
+    "split":                'dataset32-split.npz',
+    "taskType":             "regressionL2",
+    "datasetType":          "classic",
+    "optimizer":            'adam',
+    "learningRate":         1e-2,
+    "inputB":               False,
+    "dimX":                 950,
+    "dimY":                 4,
+    "normalizeY":           True,
+    "model":                'modelMLP',
+    "activation":           'relu',
+    "finalActivation":      'sigmoid',
+    "hiddenLayers":         1,
+    "hiddenDim":            2,
+    "dropout":              0,
+    "weightDecay":          1e-3,
+    "batchSize":            16,
+    "startEpoch":           0,
+    "epochs":               100,
+    "trackMetric":          "mse",
+    "earlyStopping":        None,
+    "tensorBoard":          True,
+    "logCurves":            True,
+    "logEveryBatch":        False,
+    "modelSave":            "best",
+    "bestKey":              "mse",
+    "bestSign":             "<",
+    "modelLoad":            'last.pt',
+    "shuffleDataset":       True,
+    "filePredAppendix":     None,
+    "customValidTest":      None,
+})
+
+#=======================================================================
 
 configGlobal = Conf({
     "debug":                False,
