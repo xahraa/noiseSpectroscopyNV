@@ -20,8 +20,8 @@
 
 
 import os
-#os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID";
-#os.environ["CUDA_VISIBLE_DEVICES"]="0";
+# os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID";
+# os.environ["CUDA_VISIBLE_DEVICES"]="0";
 import sys
 import socket
 import configurations
@@ -48,12 +48,11 @@ def createRunner(device, baseConf):
         conf = baseConf.copy(confDict)
 
         if conf.startEpoch == 0:
-            model,optim = fun.makeModel(conf, device)
+            model, optim = fun.makeModel(conf, device)
         else:   #maybe this doesn't make sense here
-            model,optim,_ = fun.loadModel(conf, device)
+            model, optim, _ = fun.loadModel(conf, device)
         dataloaders, _ = fun.processData(conf)
-        fun.runTrain(conf, model, optim, dataloaders, 0, None) #Start allways from epoch 0 (doesn't make sense otherwise in tune)
-
+        fun.runTrain(conf, model, optim, dataloaders, 0, None) # Start always from epoch 0 (doesn't make sense otherwise in tune)
 
     return runner
 
@@ -66,7 +65,7 @@ else:
 if len(sys.argv) < 2 or len(sys.argv) > 5:
     print("Use {} configName [parProc (def. conf)] [grace (def. conf)] [gpuNum (def. conf)]".format(sys.argv[0]))
 else:
-    conf = getattr(sys.modules['configurations'], sys.argv[1])
+    conf = eval('configurations.{}'.format(sys.argv[1]))
     tuneConf = conf.tuneConf
     
     if len(sys.argv) >= 3:
@@ -80,7 +79,7 @@ else:
         grace = conf.tuneGrace
 
     if len(sys.argv) >= 5:
-        device = "cuda:{}".format(sys.argv[3])
+        device = "cuda:{}".format(sys.argv[4])
     else:
         device = "cuda:{}".format(conf.tuneGpuNum)
 
@@ -98,9 +97,8 @@ else:
     mode = ("max" if conf.bestSign == '>' else "min")
 
     if conf.tuneHyperOpt:
-        scheduler = ASHAScheduler(metric="/".join(["valid",conf.bestKey]), mode=mode, grace_period=grace)#5)
-        # searchAlg = HyperOptSearch(tuneConf, metric="/".join(["valid",conf.bestKey]), mode=mode)
-        searchAlg = HyperOptSearch(metric="/".join(["valid",conf.bestKey]), mode=mode)
+        scheduler = ASHAScheduler(metric="/".join(["valid", conf.bestKey]), mode=mode, grace_period=grace)
+        searchAlg = HyperOptSearch(metric="/".join(["valid", conf.bestKey]), mode=mode)
     else:
         scheduler = None
         searchAlg = None
@@ -119,34 +117,29 @@ else:
     except Exception as e:
         error = e
 
-    #recover with
-    # from ray.tune import Analysis
-    # analysis = Analysis("tuneOutput/"+conf.path)
-
-
     endTime = datetime.now()
 
     subject = "Tune Training of {} finished on {}".format(sys.argv[1], socket.gethostname())
     message = "=======\n" \
-                "Start: {}\n" \
-                "End:   {}\n" \
-                "Duration: {}\n" \
-                "====================\n".format(
+              "Start: {}\n" \
+              "End:   {}\n" \
+              "Duration: {}\n" \
+              "====================\n".format(
         startTime.strftime(timeFormat),
         endTime.strftime(timeFormat),
-        str(endTime-startTime).split('.', 2)[0]
+        str(endTime - startTime).split('.', 2)[0]
     )
 
     if not analysis is None:
         message = message + "Best hyperparameters found were: {}\n" \
-                "\n" \
-                "Best logdir found were: {}\n" \
-                "\n" \
-                "Best last result found were: {}\n" \
-                "====================".format(
-            analysis.get_best_config(scope='all', metric="/".join(["valid",conf.bestKey]), mode=mode),
-            analysis.get_best_logdir(scope='all', metric="/".join(["valid",conf.bestKey]), mode=mode),
-            analysis.get_best_trial(scope='all', metric="/".join(["valid",conf.bestKey]), mode=mode).last_result
+                            "\n" \
+                            "Best logdir found were: {}\n" \
+                            "\n" \
+                            "Best last result found were: {}\n" \
+                            "====================".format(
+            analysis.get_best_config(scope='all', metric="/".join(["valid", conf.bestKey]), mode=mode),
+            analysis.get_best_logdir(scope='all', metric="/".join(["valid", conf.bestKey]), mode=mode),
+            analysis.get_best_trial(scope='all', metric="/".join(["valid", conf.bestKey]), mode=mode).last_result
         )
 
     if not error is None:
@@ -154,5 +147,6 @@ else:
         message = message + "\nERROR!!!!\n===========\n{}".format(error)
 
     print(message)
-    # notifier.sendMessage(subject, message)
+    notifier.sendMessage(subject, message)
     time.sleep(15)
+
