@@ -21,7 +21,7 @@ import loaders
 import importlib
 
 from ray import tune
-from ray.tune import Analysis
+from ray.tune.analysis import Analysis
 
 class MRELoss(nn.Module):
     def __init__(self):
