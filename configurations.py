@@ -91,6 +91,8 @@ configN1 = Conf({
     "customValidTest":      None,
     "force":                True,
     "multiCollapseMinMax":  [[0, 1], [0, 1], [0, 1], [0, 1]],
+    "useTune": False, 
+
 })
 
 #=======================================================================
