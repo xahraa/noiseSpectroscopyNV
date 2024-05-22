@@ -34,7 +34,7 @@ class CustomDataset(Dataset):
     def __getitem__(self, idx):
         sample = self.data[idx]
         # Reshape the sample 
-        sample = sample.view(-1, 350)
+        sample = sample.view(16, 350)
         return {'x': sample}
 
 def load_data():
