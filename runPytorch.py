@@ -17,9 +17,12 @@ if __name__ == '__main__':
     timeFormat = "%Y/%m/%d - %H:%M:%S"
     
     if len(sys.argv) < 2 or len(sys.argv) > 3:
-        print("Use {} configName [cpu]".format(sys.argv[0]))
+        print("Use {} configName [gpuNum (def. 0)]".format(sys.argv[0]))
     else:
-        device = "cpu"  # Set to CPU as default
+        if len(sys.argv) == 3:
+            device = "cuda:{}".format(sys.argv[2])
+        else:
+            device = "cuda:0" if torch.cuda.is_available() else "cpu"
         
         conf = eval('configurations.{}'.format(sys.argv[1]))
         startTime = datetime.now()
