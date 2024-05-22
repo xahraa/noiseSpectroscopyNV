@@ -23,36 +23,43 @@ import h5py
 import os
 # Assuming the input data needs to be reshaped from (16, 350) to (16, 950)
 class CustomDataset(Dataset):
-    def __init__(self, data):
-        self.data = data
+    def __init__(self, features, labels):
+        self.features = features
+        self.labels = labels
 
     def __len__(self):
-        return len(self.data)
+        return len(self.features)
 
     def __getitem__(self, idx):
-        # Directly return the sample without reshaping
-        return self.data[idx]
-
-def my_collate(batch):
-    # Convert list of tensors to a single tensor
-    data = torch.stack(batch)
-    # Reshape the entire batch to the desired shape (only if batch size matches)
-    return data.view(-1, 350)
+        # Each item includes features and labels
+        return {'features': self.features[idx], 'labels': self.labels[idx]}
 
 def load_data():
     num_samples = 1000
-    feature_dim = 350  # Initial feature dimension
-    data = torch.randn(num_samples, feature_dim)
+    feature_dim = 350
+    label_dim = 10  # Example label dimension
 
-    dataset = CustomDataset(data)
-    data_loader = DataLoader(dataset, batch_size=16, shuffle=True, collate_fn=my_collate)
+    # Random data generation for example
+    features = torch.randn(num_samples, feature_dim)
+    labels = torch.randn(num_samples, label_dim)
+
+    dataset = CustomDataset(features, labels)
+    data_loader = DataLoader(dataset, batch_size=16, shuffle=True)
 
     return data_loader
 
 # Example usage
 data_loader = load_data()
 for batch in data_loader:
-    print(batch.shape)  # Should print [16, 350] if batch size is 16
+    # Each batch is a dictionary with 'features' and 'labels'
+    print(batch['features'].shape, batch['labels'].shape)
+
+# Assuming runTrain expects batches with features and labels
+def runTrain(dataloaders, device='cpu'):
+    for batch in dataloaders:
+        features = batch['features'].to(device)
+        labels = batch['labels'].to(device)
+        # Perform training operations here
 # class CustomDataset(Dataset):
 #    def __init__(self, data):
 #        self.data = data
