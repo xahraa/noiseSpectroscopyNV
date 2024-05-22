@@ -56,9 +56,23 @@ for batch in data_loader:
 
 # Assuming runTrain expects batches with features and labels
 def runTrain(dataloaders, device='cpu'):
-    for batch in dataloaders:
-        features = batch['features'].to(device)
-        labels = batch['labels'].to(device)
+    for data in dataloaders:
+        features = data['features'].to(device)
+        labels = data['labels'].to(device)
+        # Perform model forward pass and backpropagation here
+        # For example, using 'features' and 'labels'
+        output = model(features)  # Assuming 'model' is your model instance
+        loss = loss_function(output, labels)  # Assuming you have a loss function defined
+
+        # Your other training operations here...
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+        # Add a print statement to help debug
+        print("Batch features shape:", features.shape)
+        print("Batch labels shape:", labels.shape)
+
         # Perform training operations here
 # class CustomDataset(Dataset):
 #    def __init__(self, data):
