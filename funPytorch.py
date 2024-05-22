@@ -263,17 +263,7 @@ def evaluate(conf, model, dataloader):
     return runningLoss / len(dataloader), runningMetrics
 
 def runTrain(conf, model, optim, dataloaders, startEpoch, bestValidMetric=None):
-    for batchIndex, data in enumerate(trainDataloader):
-        true = {k: data[k].to(device) for k in data}
-        print("Data shape:", true['x'].shape)  # Add this line to print data shape
-        model.zero_grad()
-
-        pred = model(true)
-
-        loss = lossFun(pred['y'], true['y'])
-        loss.backward()
-        optim.step()
-
+    
     trainDataloader = dataloaders['train']
     validDataloader = dataloaders['valid']
     testDataloader = dataloaders['test']
@@ -297,6 +287,16 @@ def runTrain(conf, model, optim, dataloaders, startEpoch, bestValidMetric=None):
         bestValidMetric = -math.inf if conf.bestSign == '>' else math.inf
 
     globalBatchIndex = 0
+    for batchIndex, data in enumerate(trainDataloader):
+        true = {k: data[k].to(device) for k in data}
+        print("Data shape:", true['x'].shape)  # Add this line to print data shape
+        model.zero_grad()
+
+        pred = model(true)
+
+        loss = lossFun(pred['y'], true['y'])
+        loss.backward()
+        optim.step()
 
     for epoch in range(startEpoch, startEpoch + conf.epochs):
         startTime = datetime.now()
