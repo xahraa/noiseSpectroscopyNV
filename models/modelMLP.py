@@ -53,8 +53,10 @@ class Model(nn.Module):
 
     def forward(self, true):
         x = true['x']
+        print("Input shape before reshape:", x.shape)  
         # x = x.reshape(x.shape[0], -1)
         x = x.view(x.shape[0], -1)
+        print("Input shape after reshape:", x.shape)
 
         for i in range(len(self.fcH)):
             x = self.fcH[i](x)
