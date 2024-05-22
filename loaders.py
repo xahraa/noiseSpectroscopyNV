@@ -22,8 +22,6 @@ import numpy as np
 import h5py
 import os
 # Assuming the input data needs to be reshaped from (16, 350) to (16, 950)
-# This is just an example, adjust according to your actual data shape requirements
-
 class CustomDataset(Dataset):
     def __init__(self, data):
         self.data = data
@@ -32,22 +30,53 @@ class CustomDataset(Dataset):
         return len(self.data)
 
     def __getitem__(self, idx):
-        sample = self.data[idx]
-        # Reshape the sample 
-        sample = sample.view(16, 350)
-        return {'x': sample}
+        # Directly return the sample without reshaping
+        return self.data[idx]
+
+def my_collate(batch):
+    # Convert list of tensors to a single tensor
+    data = torch.stack(batch)
+    # Reshape the entire batch to the desired shape (only if batch size matches)
+    return data.view(-1, 350)
 
 def load_data():
-    # Example data initialization (replace this with actual data loading logic)
     num_samples = 1000
-    feature_dim = 350  # Initial feature dimension before reshaping
+    feature_dim = 350  # Initial feature dimension
     data = torch.randn(num_samples, feature_dim)
 
-    # Initialize dataset and data loader
     dataset = CustomDataset(data)
-    data_loader = DataLoader(dataset, batch_size=16, shuffle=True)
+    data_loader = DataLoader(dataset, batch_size=16, shuffle=True, collate_fn=my_collate)
 
     return data_loader
+
+# Example usage
+data_loader = load_data()
+for batch in data_loader:
+    print(batch.shape)  # Should print [16, 350] if batch size is 16
+# class CustomDataset(Dataset):
+#    def __init__(self, data):
+#        self.data = data
+
+#    def __len__(self):
+#        return len(self.data)
+
+#    def __getitem__(self, idx):
+#        sample = self.data[idx]
+        # Reshape the sample 
+#        sample = sample.view(16, 350)
+#        return {'x': sample}
+
+#def load_data():
+    # Example data initialization (replace this with actual data loading logic)
+#    num_samples = 1000
+ #   feature_dim = 350  # Initial feature dimension before reshaping
+  #  data = torch.randn(num_samples, feature_dim)
+
+    # Initialize dataset and data loader
+ #   dataset = CustomDataset(data)
+#    data_loader = DataLoader(dataset, batch_size=16, shuffle=True)
+
+#    return data_loader
 
 class DatasetNpz(torch.utils.data.Dataset):
     def __init__(self, conf, mySet=None):
