@@ -64,7 +64,7 @@ configN1 = Conf({
     "optimizer":            'adam',
     "learningRate":         1e-2,
     "inputB":               False,
-    "dimX":                 950,
+    "dimX":                 380,
     "dimY":                 4,
     "normalizeY":           True,
     "model":                'modelMLP',
