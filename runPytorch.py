@@ -10,7 +10,7 @@ import sys
 import socket
 import configurations
 import funPytorch as fun
-import notifier
+# import notifier
 from datetime import datetime
 
 if __name__ == '__main__':
@@ -53,7 +53,7 @@ if __name__ == '__main__':
         print("End {}".format(sys.argv[1]))
         print(endTime.strftime(timeFormat))
         print("====================")
-        notifier.sendMessage("Training of {} finished on {}".format(sys.argv[1], socket.gethostname()), 
-                             "Start:\t{}\nEnd:\t{}\nDuration:\t{}".format(startTime.strftime(timeFormat),
-                                                                         endTime.strftime(timeFormat),
-                                                                         str(endTime - startTime).split('.', 2)[0]))
+        # notifier.sendMessage("Training of {} finished on {}".format(sys.argv[1], socket.gethostname()), 
+                          #   "Start:\t{}\nEnd:\t{}\nDuration:\t{}".format(startTime.strftime(timeFormat),
+                                                        #                 endTime.strftime(timeFormat),
+                                                         #                str(endTime - startTime).split('.', 2)[0]))
