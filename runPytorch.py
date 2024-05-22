@@ -43,10 +43,10 @@ if __name__ == '__main__':
                 startEpoch = loadEpoch + 1
         print("======= LOAD DATA")
         # dataloaders, _ = fun.processData(conf)
-        dataloaders = load_data()
-        dataloaders = {'train': dataloaders, 'valid': dataloaders, 'test': dataloaders}  # Update this as needed
+        data_loader = load_data()
+        data_loader = {'train': data_loader, 'valid': data_loader, 'test': data_loader}  # Update this as needed
         print("======= TRAIN MODEL")
-        fun.runTrain(conf, model, optim, dataloaders, startEpoch, bestValidMetric)
+        fun.runTrain(conf, model, optim, data_loader, startEpoch, bestValidMetric)
     
         endTime = datetime.now()
         print("=======")
