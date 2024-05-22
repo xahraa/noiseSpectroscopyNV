@@ -90,6 +90,7 @@ configN1 = Conf({
     "filePredAppendix":     None,
     "customValidTest":      None,
     "force":                True,
+    "multiCollapseMinMax":  [[0, 1], [0, 1], [0, 1], [0, 1]],
 })
 
 #=======================================================================
