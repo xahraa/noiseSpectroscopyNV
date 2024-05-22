@@ -1,6 +1,7 @@
 import torch
 import configurations
 import funPytorch as fun
+import os
 
 # Load the configuration
 conf = configurations.configN1
