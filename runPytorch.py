@@ -42,8 +42,6 @@ if __name__ == '__main__':
                 startEpoch = loadEpoch + 1
         print("======= LOAD DATA")
         # dataloaders, _ = fun.processData(conf)
-        dataloaders = load_data()
-        dataloaders = {'train': dataloaders, 'valid': dataloaders, 'test': dataloaders}  # Update this as needed
         print("======= TRAIN MODEL")
         fun.runTrain(conf, model, optim, dataloaders, startEpoch, bestValidMetric)
     
