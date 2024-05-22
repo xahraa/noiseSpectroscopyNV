@@ -43,7 +43,7 @@ if __name__ == '__main__':
         print("======= LOAD DATA")
         # dataloaders, _ = fun.processData(conf)
         print("======= TRAIN MODEL")
-        fun.runTrain(conf, model, optim, dataloaders, startEpoch, bestValidMetric)
+        fun.runTrain(conf, model, optim, dataloader, startEpoch, bestValidMetric)
     
         endTime = datetime.now()
         print("=======")
