@@ -33,8 +33,8 @@ class CustomDataset(Dataset):
 
     def __getitem__(self, idx):
         sample = self.data[idx]
-        # Reshape the sample if necessary (for example purposes, reshape to 950 features)
-        sample = sample.view(-1, 950)
+        # Reshape the sample 
+        sample = sample.view(-1, 350)
         return {'x': sample}
 
 def load_data():
