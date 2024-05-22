@@ -22,36 +22,7 @@ import numpy as np
 import h5py
 import os
 
-       # Assuming the input data needs to be reshaped from (16, 350) to (16, 950)
-# This is just an example, adjust according to your actual data shape requirements
 
-class CustomDataset(torch.utils.data.Dataset):
-    def __init__(self, data):
-        self.data = data
-
-    def __len__(self):
-        return len(self.data)
-
-    def __getitem__(self, idx):
-        sample = self.data[idx]
-        # Reshape the sample if necessary
-        sample = sample.view(-1, 950)  # Example reshaping
-        return sample
-
-# Create a data loader
-dataloaders = torch.utils.data.DataLoader(CustomDataset(data), batch_size=16, shuffle=True)
-
-#def load_data():
-    # Example data initialization (replace this with actual data loading logic)
-#    num_samples = 1000
- #   feature_dim = 350  # Initial feature dimension before reshaping
-  #  data = torch.randn(num_samples, feature_dim)
-
-    # Initialize dataset and data loader
- #   dataset = CustomDataset(data)
-#    data_loader = DataLoader(dataset, batch_size=16, shuffle=True)
-
-#    return data_loader
 
 class DatasetNpz(torch.utils.data.Dataset):
     def __init__(self, conf, mySet=None):
