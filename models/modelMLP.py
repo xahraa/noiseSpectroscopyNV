@@ -40,7 +40,6 @@ class Model(nn.Module):
 
     def _activation(self, x, activation):
         if activation == 'sigmoid':
-            #x = F.sigmoid(x)
             x = torch.sigmoid(x)
         elif activation == 'tanh':
             x = torch.tanh(x)
@@ -48,15 +47,12 @@ class Model(nn.Module):
             x = F.relu(x)
         elif not activation == 'none':
             raise Exception("value of activation not valid")
-
         return x
 
     def forward(self, true):
         x = true['x']
-        print("Input shape before reshape:", x.shape)  
-        # x = x.reshape(x.shape[0], -1)
+        # Flatten the input data if necessary
         x = x.view(x.shape[0], -1)
-        print("Input shape after reshape:", x.shape)
 
         for i in range(len(self.fcH)):
             x = self.fcH[i](x)
@@ -67,4 +63,4 @@ class Model(nn.Module):
         x = self.fcOut(x)
         x = self._activation(x, self.conf.finalActivation)
 
-        return {'y':x}
+        return {'y': x}
