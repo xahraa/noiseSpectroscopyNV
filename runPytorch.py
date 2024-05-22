@@ -1,37 +1,25 @@
 #!/usr/bin/env python
 
-# examples to run parallel multiple configurations:
-
+# Examples to run parallel multiple configurations:
 # for n in {0..8}; do for c in {0..2}; do ./runPytorch.py configMC1all\[$n\]\[$c\]& done; done
-
 # for n in {0..4}; do for c in {0..2}; do ./runPytorch.py configMC1all\[$n\]\[$c\]& done; done; wait; for n in {5..8}; do for c in {0..2}; do ./runPytorch.py configMC1all\[$n\]\[$c\]& done; done; wait
-
 # kill `ps -e|grep runPyt|cut -d ' ' -f2`
 
 import os
-# os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID";
-# os.environ["CUDA_VISIBLE_DEVICES"]="0";
 import sys
 import socket
 import configurations
 import funPytorch as fun
 import notifier
 from datetime import datetime
-# import torch.multiprocessing as mp
 
 if __name__ == '__main__':
-    # mp.set_start_method('spawn')
-    # mp.set_start_method('forkserver')
-
     timeFormat = "%Y/%m/%d - %H:%M:%S"
     
     if len(sys.argv) < 2 or len(sys.argv) > 3:
-        print("Use {} configName [gpuNum (def. 0)]".format(sys.argv[0]))
+        print("Use {} configName [cpu]".format(sys.argv[0]))
     else:
-        if len(sys.argv) == 3:
-            device = "cuda:{}".format(sys.argv[2])
-        else:
-            device = "cuda:0"
+        device = "cpu"  # Set to CPU as default
         
         conf = eval('configurations.{}'.format(sys.argv[1]))
         startTime = datetime.now()
