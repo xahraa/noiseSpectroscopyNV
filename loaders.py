@@ -21,71 +21,25 @@ from torch.utils.data import Dataset, DataLoader
 import numpy as np
 import h5py
 import os
-# Assuming the input data needs to be reshaped from (16, 350) to (16, 950)
-class CustomDataset(Dataset):
-    def __init__(self, features, labels):
-        self.features = features
-        self.labels = labels
+
+       # Assuming the input data needs to be reshaped from (16, 350) to (16, 950)
+# This is just an example, adjust according to your actual data shape requirements
+
+class CustomDataset(torch.utils.data.Dataset):
+    def __init__(self, data):
+        self.data = data
 
     def __len__(self):
-        return len(self.features)
+        return len(self.data)
 
     def __getitem__(self, idx):
-        # Each item includes features and labels
-        return {'features': self.features[idx], 'labels': self.labels[idx]}
+        sample = self.data[idx]
+        # Reshape the sample if necessary
+        sample = sample.view(-1, 950)  # Example reshaping
+        return sample
 
-def load_data():
-    num_samples = 1000
-    feature_dim = 350
-    label_dim = 10  # Example label dimension
-
-    # Random data generation for example
-    features = torch.randn(num_samples, feature_dim)
-    labels = torch.randn(num_samples, label_dim)
-
-    dataset = CustomDataset(features, labels)
-    data_loader = DataLoader(dataset, batch_size=16, shuffle=True)
-
-    return data_loader
-
-# Example usage
-data_loader = load_data()
-for batch in data_loader:
-    # Each batch is a dictionary with 'features' and 'labels'
-    print(batch['features'].shape, batch['labels'].shape)
-
-# Assuming runTrain expects batches with features and labels
-def runTrain(dataloaders, device='cpu'):
-    for data in dataloaders:
-        features = data['features'].to(device)
-        labels = data['labels'].to(device)
-        # Perform model forward pass and backpropagation here
-        # For example, using 'features' and 'labels'
-        output = model(features)  # Assuming 'model' is your model instance
-        loss = loss_function(output, labels)  # Assuming you have a loss function defined
-
-        # Your other training operations here...
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-
-        # Add a print statement to help debug
-        print("Batch features shape:", features.shape)
-        print("Batch labels shape:", labels.shape)
-
-        # Perform training operations here
-# class CustomDataset(Dataset):
-#    def __init__(self, data):
-#        self.data = data
-
-#    def __len__(self):
-#        return len(self.data)
-
-#    def __getitem__(self, idx):
-#        sample = self.data[idx]
-        # Reshape the sample 
-#        sample = sample.view(16, 350)
-#        return {'x': sample}
+# Create a data loader
+dataloaders = torch.utils.data.DataLoader(CustomDataset(data), batch_size=16, shuffle=True)
 
 #def load_data():
     # Example data initialization (replace this with actual data loading logic)
