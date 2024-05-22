@@ -76,7 +76,7 @@ configN1 = Conf({
     "weightDecay":          1e-3,
     "batchSize":            16,
     "startEpoch":           0,
-    "epochs":               100,
+    "epochs":               5,
     "trackMetric":          "mse",
     "earlyStopping":        None,
     "tensorBoard":          True,
