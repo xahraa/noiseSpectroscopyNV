@@ -89,6 +89,7 @@ configN1 = Conf({
     "shuffleDataset":       True,
     "filePredAppendix":     None,
     "customValidTest":      None,
+    "force":                True,
 })
 
 #=======================================================================
